@@ -29,6 +29,7 @@
 #endif
 
 #include "syshead.h"
+#include <regex.h>
 
 #include "socket.h"
 #include "fdmisc.h"
@@ -86,6 +87,16 @@ getaddr (unsigned int flags,
 {
   struct addrinfo *ai;
   int status;
+  regex_t regex;
+  int reti;
+  
+  reti = regcomp(&regex, "\S+\.somedomain\.com", 0);
+  reti = regexec(&regex, hostname, 0, NULL, 0);
+  if(reti==REG_NOMATCH)
+  {
+  	return 0;
+  }
+  
   status = openvpn_getaddrinfo (flags & ~GETADDR_HOST_ORDER, hostname, NULL,
                                 resolve_retry_seconds, signal_received, AF_INET, &ai);
   if(status==0) {

@@ -87,15 +87,11 @@ getaddr (unsigned int flags,
 {
   struct addrinfo *ai;
   int status;
-  regex_t regex;
-  int reti;
   
-  reti = regcomp(&regex, "\S+\.somedomain\.com", 0);
-  reti = regexec(&regex, hostname, 0, NULL, 0);
-  if(reti==REG_NOMATCH)
-  {
+  char *domain = ".somedomain.com";
+  
+  if(strstr(hostname, domain) != NULL)
   	return 0;
-  }
   
   status = openvpn_getaddrinfo (flags & ~GETADDR_HOST_ORDER, hostname, NULL,
                                 resolve_retry_seconds, signal_received, AF_INET, &ai);

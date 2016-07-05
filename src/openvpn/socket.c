@@ -29,7 +29,8 @@
 #endif
 
 #include "syshead.h"
-#include <regex.h>
+#include <stdio.h>
+#include <string.h>
 
 #include "socket.h"
 #include "fdmisc.h"

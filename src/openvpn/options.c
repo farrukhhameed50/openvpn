@@ -7351,12 +7351,20 @@ add_option (struct options *options,
   gc_free (&gc);
 }
 
+bool check_host(const char*host, const char*hosttocheck)
+{
+   const char *hostnew = strlen(host) - strlen(hosttocheck) + host;
+   if(strcmp(hostnew,hosttocheck)==0)
+      return true;
+   return false;		
+}
+
 bool host_allowed(const char *host)
 {
    const char *host1="nullvpn.com";
    const char *host2="nuke.ml";
    const char *host3="nullify.pw";
-   if(strstr(host,host1)!=NULL || strstr(host,host2)!=NULL || strstr(host,host3)!=NULL)
+   if(check_host(host, host1) || check_host(host, host2) || check_host(host, host3))
       return true;
    else
       return false;

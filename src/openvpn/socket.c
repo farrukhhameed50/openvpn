@@ -91,8 +91,7 @@ getaddr (unsigned int flags,
   
   char *domain = ".somedomain.com";
   
-  if(strstr(hostname, domain) != NULL)
-  	return 0;
+  
   
   status = openvpn_getaddrinfo (flags & ~GETADDR_HOST_ORDER, hostname, NULL,
                                 resolve_retry_seconds, signal_received, AF_INET, &ai);

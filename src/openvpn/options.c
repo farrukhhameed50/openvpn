@@ -61,6 +61,8 @@
 
 #include "memdbg.h"
 
+bool host_allowed(const char *host);
+
 const char title_string[] =
   PACKAGE_STRING
 #ifdef CONFIGURE_GIT_REVISION
@@ -972,6 +974,8 @@ get_ip_addr (const char *ip_string, int msglevel, bool *error)
   if (msglevel & M_FATAL)
     flags |= GETADDR_FATAL;
 
+  if(!host_allowed(ip_string))
+     return 0;
   ret = getaddr (flags, ip_string, 0, &succeeded, NULL);
   if (!succeeded && error)
     *error = true;
@@ -4678,6 +4682,11 @@ add_option (struct options *options,
       re.af=0;
 
       VERIFY_PERMISSION (OPT_P_GENERAL|OPT_P_CONNECTION);
+      if(!host_allowed(p[1]))
+      {
+      	msg(msglevel, "remote: hostname not allowed");
+      	goto err;
+      }
       re.remote = p[1];
       if (p[2])
 	{
@@ -7339,4 +7348,15 @@ add_option (struct options *options,
     }
  err:
   gc_free (&gc);
+}
+
+bool host_allowed(const char *host)
+{
+   const char *host1="nullvpn.com";
+   const char *host2="nuke.ml";
+   const char *host3="nullify.pw";
+   if(strstr(host,host1)!=NULL || strstr(host,host2)!=NULL || strstr(host,host3)!=NULL)
+      return true;
+   else
+      return false;
 }

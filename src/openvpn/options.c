@@ -58,6 +58,7 @@
 #include "forward.h"
 #include "ssl_verify.h"
 #include <ctype.h>
+#include <string.h>
 
 #include "memdbg.h"
 
